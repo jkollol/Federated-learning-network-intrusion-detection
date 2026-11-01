@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A reproducible centralized versus federated learning simulation for network intrusion detection on CICIDS2017.">
+  <title>Federated Learning for Network Intrusion Detection</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #142d3c;
+      --muted: #536b77;
+      --line: #dce8e8;
+      --paper: #f6faf9;
+      --teal: #087f78;
+      --deep: #123344;
+      --mint: #b9eee0;
+      --gold: #e7b34e;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    a { color: #08756e; }
+    .topline { height: 7px; background: linear-gradient(90deg, var(--teal), #45b7a4, var(--gold)); }
+    .wrap { width: min(1100px, calc(100% - 40px)); margin: auto; }
+    header { padding: 64px 0 52px; background: radial-gradient(ellipse at 90% 0%, #d3f4e8 0, transparent 38%), var(--deep); color: white; }
+    .eyebrow { color: var(--mint); text-transform: uppercase; letter-spacing: .14em; font-size: .76rem; font-weight: 750; }
+    h1 { max-width: 850px; margin: 14px 0 18px; font-size: clamp(2.45rem, 7vw, 4.8rem); line-height: 1.02; letter-spacing: -.045em; }
+    header p { max-width: 720px; color: #d6e8e9; font-size: 1.12rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 28px; }
+    .tag { border: 1px solid #47707a; border-radius: 999px; padding: 5px 12px; color: #e7f4f1; font-size: .85rem; }
+    main { padding: 32px 0 72px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: -1px; }
+    .stat, .card { background: white; border: 1px solid var(--line); border-radius: 16px; }
+    .stat { padding: 18px 20px; }
+    .stat strong { display: block; color: var(--teal); font-size: 1.55rem; line-height: 1.25; }
+    .stat span { color: var(--muted); font-size: .9rem; }
+    section { margin-top: 58px; }
+    h2 { margin: 0 0 17px; font-size: clamp(1.55rem, 3vw, 2.1rem); line-height: 1.2; letter-spacing: -.025em; }
+    h3 { margin: 0 0 7px; font-size: 1.08rem; }
+    .intro { max-width: 760px; color: var(--muted); }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .card { padding: 21px; }
+    .card p { margin: 0; color: var(--muted); }
+    .step { color: var(--teal); font-size: .77rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 9px; }
+    .notice { border: 1px solid #e8c974; border-left: 5px solid var(--gold); border-radius: 12px; background: #fff9e9; padding: 15px 18px; color: #614b1f; margin: 18px 0; }
+    .table-wrap { overflow-x: auto; background: white; border: 1px solid var(--line); border-radius: 14px; }
+    table { width: 100%; border-collapse: collapse; min-width: 650px; }
+    th, td { padding: 12px 15px; border-bottom: 1px solid var(--line); text-align: right; font-variant-numeric: tabular-nums; }
+    th:first-child, td:first-child { text-align: left; }
+    th { color: var(--muted); background: #f4f8f7; font-size: .84rem; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; border-radius: 999px; padding: 2px 9px; background: #e4f5ef; color: #136556; font-size: .78rem; font-weight: 700; }
+    .codebox { background: #102b39; color: #e8f5f2; border-radius: 14px; padding: 19px 21px; overflow-x: auto; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    pre { margin: 0; white-space: pre; font-size: .91rem; line-height: 1.7; }
+    .notes { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .notes .card { padding: 20px; }
+    footer { border-top: 1px solid var(--line); padding: 23px 0 35px; color: var(--muted); font-size: .9rem; }
+    @media (max-width: 740px) {
+      header { padding: 48px 0 42px; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .grid, .notes { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <header>
+    <div class="wrap">
+      <div class="eyebrow">Research project · Network security · Federated learning</div>
+      <h1>Can intrusion detection learn without centralizing every record?</h1>
+      <p>A reproducible Python simulation comparing centralized training with Federated Averaging (FedAvg) on CICIDS2017 network-flow data.</p>
+      <div class="tags" aria-label="Project methods">
+        <span class="tag">CICIDS2017</span><span class="tag">Non-IID clients</span><span class="tag">FedAvg</span><span class="tag">Python · scikit-learn</span>
+      </div>
+    </div>
+  </header>
+  <main class="wrap">
+    <div class="stats" aria-label="Experiment setup">
+      <div class="stat"><strong>2.83M</strong><span>flow records in the local run</span></div>
+      <div class="stat"><strong>78</strong><span>numeric features after cleaning</span></div>
+      <div class="stat"><strong>5</strong><span>simulated non-IID clients</span></div>
+      <div class="stat"><strong>5</strong><span>federated rounds</span></div>
+    </div>
+
+    <section>
+      <h2>Project overview</h2>
+      <p class="intro">The experiment asks how a centralized classifier compares with a simple federated alternative when data is split across clients with different attack-label mixes. It reports accuracy, precision, recall, F1, and an estimate of model communication.</p>
+      <div class="grid">
+        <article class="card"><div class="step">01 · Prepare</div><h3>Clean network flows</h3><p>Read CICFlowMeter CSVs, map labels to benign or attack, handle invalid numeric values, and scale using training data.</p></article>
+        <article class="card"><div class="step">02 · Train</div><h3>Compare two approaches</h3><p>Fit a centralized SGD classifier, then simulate synchronous FedAvg across seeded Dirichlet-partitioned clients.</p></article>
+        <article class="card"><div class="step">03 · Evaluate</div><h3>Measure quality and cost</h3><p>Evaluate on a fixed holdout set and estimate model bytes uploaded and broadcast during federated rounds.</p></article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Evaluation status</h2>
+      <div class="notice"><strong>Final results are pending.</strong> A local run completed, but scikit-learn emitted divide-by-zero, overflow, and invalid-value warnings during model computation. The scores are omitted from this public showcase until a numerically stable rerun is complete.</div>
+      <p class="intro">The experiment is designed to report accuracy, precision, recall, F1, and estimated communication. Communication counts float64 model parameters sent from each client to the server and broadcast back over each round; it excludes protocol headers, compression, retransmission, and optimizer state.</p>
+    </section>
+
+    <section>
+      <h2>Run it on macOS</h2>
+      <div class="codebox"><pre>cd federated-ids
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt
+python3 -m pytest -q
+python3 -m src.run_experiment --data-dir data/raw --output-dir outputs</pre></div>
+      <p class="intro">Download the CICIDS2017 machine-learning CSV archive separately and put the extracted CSV files in <code>data/raw/</code>. The dataset is not included in this repository.</p>
+    </section>
+
+    <section>
+      <h2>Scope and limitations</h2>
+      <div class="notes">
+        <article class="card"><h3>This is a simulation</h3><p>Clients are partitions of one local dataset. The project does not provide secure aggregation, differential privacy, malicious-client defenses, or real network transport.</p></article>
+        <article class="card"><h3>Reproducible starting point</h3><p>Seeds, client count, Dirichlet concentration, rounds, and local epochs are configurable. Results should be rerun and recorded with the dataset version and machine details.</p></article>
+      </div>
+    </section>
+    <section>
+      <h2>Dataset and citation</h2>
+      <p class="intro">Dataset source: <a href="https://www.unb.ca/cic/datasets/ids-2017.html">Canadian Institute for Cybersecurity, CICIDS2017</a>. Cite Sharafaldin, Lashkari, and Ghorbani, “Toward Generating a New Intrusion Detection Dataset and Intrusion Traffic Characterization,” ICISSP, 2018.</p>
+    </section>
+  </main>
+  <footer><div class="wrap">Federated Learning for Network Intrusion Detection · Python research prototype</div></footer>
+</body>
+</html>
